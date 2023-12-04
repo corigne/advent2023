@@ -1,10 +1,7 @@
-use std::io::{self};
+mod adv1;
 
 fn main() {
-    println!("Hello, world!\nPlease enter a string: ");
-    let mut instr = String::new();
-
-    io::stdin().read_line(&mut instr).expect("Error occurred on input.");
-
-    println!("You entered: {instr}");
+    //adv1::calibration_parse("input/1.1");
+    //adv1::calibration_parse_2("input/1.2.sample", true);
+    adv1::calibration_parse_2("input/1.2", false);
 }
