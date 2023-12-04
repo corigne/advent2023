@@ -1,9 +1,8 @@
-use std::char;
-use std::collections::{VecDeque, vec_deque};
 use std::io::BufRead;
 use std::fs::File;
 use std::io::BufReader;
-use regex::Regex;
+use std::collections::VecDeque;
+use std::char;
 use aho_corasick::AhoCorasick;
 
 pub fn calibration_parse(filepath: & str) {
