@@ -2,10 +2,6 @@ use std::i32;
 use std::io::BufRead;
 use std::fs::File;
 use std::io::BufReader;
-use std::ops::Index;
-use std::task::Wake;
-
-use rand::distributions::DistString;
 
 pub fn missing_part(filepath: &str, debug: bool) {
 
