@@ -14,7 +14,6 @@ pub fn missing_part(filepath: &str, debug: bool) {
     let mut matches: Vec<String> = vec![];
 
     for line in reader.lines() {
-
         match line {
             Ok(l) => {
                 if debug { dbg!(&l); }
@@ -28,7 +27,6 @@ pub fn missing_part(filepath: &str, debug: bool) {
     };
 
     let pad: String = vec!['.'; schem[0].len()].iter().collect();
-
     schem.insert(0, pad.clone());
     schem.push(pad);
 
@@ -59,25 +57,62 @@ pub fn missing_part(filepath: &str, debug: bool) {
                         matches.push(buf.clone());
                         buf.clear()
                     }
-
                 },
 
                 '.' => {
-
                     buf.clear();
-
                     for neighbor in neighbors {
                         valid = valid && neighbor.chars().all(|c| c == '.')
                     }
-
                 }
                 _ => ()
             };
         }
-
     }
     if debug { dbg!(&matches); }
 
     let parts = matches.iter().fold(0 as u32, |acc, num| acc + num.parse().unwrap_or(0));
     println!("Parts sum: {}", parts);
+}
+
+pub fn sum_gear_ratios(filepath: &str, debug: bool) {
+    let file = match File::open(filepath) {
+        Err(e) => return println!("IO error: {}", e),
+        Ok(f) => f,
+    };
+    let reader = BufReader::new(file);
+    let mut schem: Vec<String> = Vec::new();
+    let mut matches: Vec<String> = vec![];
+
+    for line in reader.lines() {
+        match line {
+            Ok(l) => {
+                if debug { dbg!(&l); }
+                let mut l = l.chars().collect::<String>();
+                l.insert(0, '.');
+                l.push('.');
+                schem.push(l);
+            },
+            Err(e) => return println!("IO Error: {}", e),
+        }
+    };
+
+    let pad: String = vec!['.'; schem[0].len()].iter().collect();
+    schem.insert(0, pad.clone());
+    schem.push(pad);
+
+    for line in 1..schem.len()-1 {
+        let ln = &schem[line];
+        let above = &schem[line-1];
+        let below = &schem[line+1];
+
+        for c in 1..ln.len()-1 {
+
+            if ln.chars().nth(c).unwrap() == '*' {
+                println!("{}", c);
+            }
+
+
+        }
+    }
 }

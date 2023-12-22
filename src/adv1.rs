@@ -76,12 +76,11 @@ pub fn calibration_parse_2(filepath: & str, debug: bool) {
         Ok(f) => f,
     };
     let reader = BufReader::new(file);
-
-    let mut cal_sum: u32 = 0;
-
     let ac_pat = ["one","two","three","four","five","six","seven","eight",
         "nine","1","2","3","4","5","6","7","8","9"];
     let ac = AhoCorasick::new(ac_pat).unwrap();
+
+    let mut cal_sum: u32 = 0;
 
     for line in reader.lines() {
         match line {
@@ -123,6 +122,5 @@ pub fn calibration_parse_2(filepath: & str, debug: bool) {
             Err(e) => return println!("IO Error: {}", e),
         }
     };
-
     println!("Calibration value: {}", cal_sum);
 }

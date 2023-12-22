@@ -1,6 +1,6 @@
-mod adv1;
-mod adv2;
-mod adv3;
+pub mod adv1;
+pub mod adv2;
+pub mod adv3;
 
 fn main() {
 
@@ -14,4 +14,6 @@ fn main() {
 
     // Day 3
     //adv3::missing_part("input/3.1", false);
+    adv3::sum_gear_ratios("input/3.2.sample", true)
+
 }
