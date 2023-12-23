@@ -14,6 +14,7 @@ fn main() {
 
     // Day 3
     //adv3::missing_part("input/3.1", false);
-    adv3::sum_gear_ratios("input/3.2.sample", true)
+    adv3::sum_gear_ratios("input/3.2.sample", true);
+    //adv3::sum_gear_ratios("input/3.2", false);
 
 }

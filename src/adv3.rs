@@ -1,7 +1,7 @@
-use std::i32;
 use std::io::BufRead;
 use std::fs::File;
 use std::io::BufReader;
+use std::u128;
 
 pub fn missing_part(filepath: &str, debug: bool) {
 
@@ -75,19 +75,17 @@ pub fn missing_part(filepath: &str, debug: bool) {
     println!("Parts sum: {}", parts);
 }
 
-pub fn sum_gear_ratios(filepath: &str, debug: bool) {
+pub fn sum_gear_ratios(filepath: &str, _debug: bool) {
     let file = match File::open(filepath) {
         Err(e) => return println!("IO error: {}", e),
         Ok(f) => f,
     };
     let reader = BufReader::new(file);
     let mut schem: Vec<String> = Vec::new();
-    let mut matches: Vec<String> = vec![];
 
     for line in reader.lines() {
         match line {
             Ok(l) => {
-                if debug { dbg!(&l); }
                 let mut l = l.chars().collect::<String>();
                 l.insert(0, '.');
                 l.push('.');
@@ -101,18 +99,44 @@ pub fn sum_gear_ratios(filepath: &str, debug: bool) {
     schem.insert(0, pad.clone());
     schem.push(pad);
 
-    for line in 1..schem.len()-1 {
-        let ln = &schem[line];
-        let above = &schem[line-1];
-        let below = &schem[line+1];
+    let mut sum = 0;
 
-        for c in 1..ln.len()-1 {
+    for line_num in 1..schem.len()-1 {
 
-            if ln.chars().nth(c).unwrap() == '*' {
-                println!("{}", c);
+        let line = &schem[line_num];
+        if line.contains('*') {
+            let above = &schem[line_num-1];
+            let below = &schem[line_num+1];
+            if _debug { dbg!(&above, &line, &below); }
+
+            let mut ratio:u128 = 1;
+            let mut gears = 0;
+            let mut buf = String::new();
+            let mut adj = false;
+
+            // slide a window across ln, above, and below, add numbers with adjacent gear *
+            for c in 1..&line.len()-1 {
+                let curr = line.as_bytes()[c];
+
+                if curr.is_ascii_digit() {
+                    buf.push(curr as char);
+                    adj = adj_chars.contains('*');
+                } else {
+                    if adj && !buf.is_empty() {
+                        gears += 1;
+                        if gears == 2 { ratio *= ratio }
+
+                        if _debug { dbg!(&ratio, &buf); }
+                    }
+                    buf.clear();
+                }
             }
 
-
+            if gears == 2 {
+                sum += ratio;
+            }
         }
+        dbg!(sum);
     }
+    println!("End {filepath}");
 }
